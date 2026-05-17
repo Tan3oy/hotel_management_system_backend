@@ -2,30 +2,37 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-
+protected UserService $userService;
+    public function __construct(UserService $userService)
+    {
+        $this->middleware('auth:api',['except' => ['register','login']]);
+        $this->userService = $userService;
+    }
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-        ]);
+        $this->userService->register($request);
+        // $request->validate([
+        //     'name' => 'required',
+        //     'email' => 'required|email|unique:users',
+        //     'password' => 'required|min:6',
+        // ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        // $user = User::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => Hash::make($request->password),
+        // ]);
 
-        return response()->json([
-            'message' => 'User registered successfully'
-        ]);
+        // return response()->json([
+        //     'message' => 'User registered successfully'
+        // ]);
     }
     public function login(Request $request)
     {
