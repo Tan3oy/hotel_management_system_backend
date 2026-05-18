@@ -17,6 +17,8 @@ COPY . .
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+RUN php artisan passport:keys
+
 RUN chmod -R 775 storage bootstrap/cache && \
 chown -R www-data:www-data storage bootstrap/cache
 
