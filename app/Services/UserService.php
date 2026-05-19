@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\CommonUtils;
 use App\Repositories\Interfaces\UserInterface;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -50,6 +51,18 @@ class UserService
         ];
         if (Auth::attempt($credentials)) {
             $user = $this->userRepository->getUserByEmail($request);
+            if ($user->is_delete == 1) {
+
+                return $this->returnFail(1, ["User not found"]);
+            }
+
+            if ($user->status == 0) {
+                return $this->returnFail(1, ["Your Account has been deactivated"]);
+                }
+                if ($user->role_id != 1) {
+                $this->log($user);
+                return $this->returnFail(1, ["You don't have access"]);
+            }
             $token = Auth::user()->createToken('authToken')->accessToken;
             return $this->returnSuccess(200, [
                 'user' => $user,
