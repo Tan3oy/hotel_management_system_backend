@@ -21,9 +21,15 @@ class UserRepository implements UserInterface
     }
     public function getUserByEmail(Request $request)
     {
-        return User::select('id','name','email','role_id','status','is_delete')
+        $user = User::select('id','name','email','role_id','status','is_delete')
+        ->with(['role' => function($q){
+            $q->select('id' , 'role_name');
+        }])
         ->where('email', $request->email)
         ->first();
+
+        unset($user->role_id);
+        return $user;
     }
 
 }

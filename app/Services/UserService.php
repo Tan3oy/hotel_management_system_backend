@@ -52,16 +52,14 @@ class UserService
         if (Auth::attempt($credentials)) {
             $user = $this->userRepository->getUserByEmail($request);
             if ($user->is_delete == 1) {
-
-                return $this->returnFail(1, ["User not found"]);
+                return $this->returnFail(5, ["Your Account is removed. Please contact to Admin Support"]);
             }
 
-            if ($user->status == 0) {
-                return $this->returnFail(1, ["Your Account has been deactivated"]);
-                }
-                if ($user->role_id != 1) {
-                $this->log($user);
-                return $this->returnFail(1, ["You don't have access"]);
+            if ($user->status != 1) {
+                return $this->returnFail(4, ["Your Account is deactivated. Please contact to Admin Support"]);
+            }
+            if ($user->role->id != 1) {
+                return $this->returnFail(4, ["You are not authorized to access this system. Please contact to Admin Support"]);
             }
             $token = Auth::user()->createToken('authToken')->accessToken;
             return $this->returnSuccess(200, [
