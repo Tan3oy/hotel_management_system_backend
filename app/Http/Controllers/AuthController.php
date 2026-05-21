@@ -22,4 +22,5 @@ class AuthController extends Controller
         return $this->userService->login($request);
 
     }
+
 }
