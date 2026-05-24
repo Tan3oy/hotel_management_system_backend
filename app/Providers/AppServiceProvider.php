@@ -2,7 +2,17 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\RoomStatusInterface;
+use App\Repositories\RoomStatusRepository;
+
+use App\Repositories\Interfaces\RoomInterface;
+use App\Repositories\RoomRepository;
+
+use App\Repositories\Interfaces\UserInterface;
+use App\Repositories\UserRepository;
+
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,6 +21,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+
+        $this->app->bind(
+            RoomInterface::class,
+            RoomRepository::class
+        );
+        $this->app->bind(
+            UserInterface::class,
+            UserRepository::class
+        );
         //
     }
 

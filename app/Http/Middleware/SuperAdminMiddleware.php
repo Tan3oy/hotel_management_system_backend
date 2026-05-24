@@ -5,18 +5,21 @@ namespace App\Http\Middleware;
 use App\Helpers\CommonUtils;
 use Closure;
 use Illuminate\Http\Request;
-use Auth;
-use Redirect;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpFoundation\Response;
 
-class adminMiddleware
+class SuperAdminMiddleware
 {
-
     use CommonUtils;
+    /**
+     * Handle an incoming request.
+     *
+     * @param  Closure(Request): (Response)  $next
+     */
     public function handle(Request $request, Closure $next): Response
     {
-
-        if (!Auth::check()) {
+if (!Auth::check()) {
             return Redirect::route('login');
         }
         $user = Auth::user();
@@ -45,5 +48,3 @@ class adminMiddleware
         return $this->returnFail(401, [$message]);
     }
 }
-
-
