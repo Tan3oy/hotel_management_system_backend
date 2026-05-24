@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\RoomStatusInterface;
+use App\Repositories\RoomStatusRepository;
+
 use App\Repositories\Interfaces\RoomInterface;
 use App\Repositories\RoomRepository;
 
@@ -18,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+
         $this->app->bind(
             RoomInterface::class,
             RoomRepository::class
