@@ -21,7 +21,7 @@ class RoomService
     $rules = [
         'name' => 'required|string',
         'room_type_id' => 'required|integer|exists:room_types_master,id',
-        'bed_type_id' => 'required|integer|exists:bed_types_master,id',
+        'bed_type_id' => 'required|integer|exists:room_bed_types_master,id',
         'size' => 'required|integer',
         'view_type_id' => 'required|integer|exists:view_types_master,id',
         'rating' => 'required|numeric|min:0|max:5',
