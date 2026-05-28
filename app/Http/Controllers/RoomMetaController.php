@@ -17,4 +17,23 @@ class RoomMetaController extends Controller
 {
         return $this->roomMetaService->createRoomType($request);
 }
+public function updateRoomType($request)
+{
+        return $this->roomMetaService->updateRoomType($request);
+}
+public function toggleRoomTypeStatus($request)
+{
+        return $this->roomMetaService->toggleRoomTypeStatus($request);
+}
+public function deleteRoomType($request)
+{
+        return $this->roomMetaService->deleteRoomType($request);
+}
+public function     public function createBedType($request)
+($request)
+{
+        return $this->roomMetaService->    public function createBedType($request)
+($request);
+}
+
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helpers\CommonUtils;
+use App\Models\BedType;
 use App\Models\RoomType;
 use App\Repositories\Interfaces\RoomMetaInterface;
 use Illuminate\Support\Facades\Validator;
@@ -38,7 +39,7 @@ class RoomMetaService
     {
         $rules = [
             'room_type_id' => 'required|integer|exists:room_types,id',
-            'name' => ['required','string',Rule::unique('room_types','name')->ignore($request->room_type_id)],
+            'name' => ['required', 'string', Rule::unique('room_types', 'name')->ignore($request->room_type_id)],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -52,7 +53,7 @@ class RoomMetaService
         return $this->returnSuccess(201, 'Room Type updated successfully');
 
     }
-     public function toggleRoomTypeStatus($request)
+    public function toggleRoomTypeStatus($request)
     {
         $rules = [
             'room_type_id' => 'required|integer|exists:room_types,id',
@@ -68,7 +69,7 @@ class RoomMetaService
 
         return $this->returnSuccess(201, 'Room Type status updated successfully');
     }
-     public function deleteRoomType($request)
+    public function deleteRoomType($request)
     {
         $rules = [
             'room_type_id' => 'required|integer|exists:room_types,id',
@@ -83,6 +84,72 @@ class RoomMetaService
         $roomTypeModel->save();
 
         return $this->returnSuccess(201, 'Room Type deleted successfully');
+    }
+    public function createBedType($request)
+    {
+        $rules = [
+            'name' => 'required|string|unique:bed_types,name',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->returnFail(1, $validator->errors()->all());
+        }
+        $bedTypeModel = new BedType();
+
+        $bedTypeModel->name = $request->name;
+        $bedTypeModel->save();
+        return $this->returnSuccess(201, 'New Bed Type added successfully');
+
+    }
+    public function updateBedType($request)
+    {
+        $rules = [
+            'bed_type_id' => 'required|integer|exists:bed_types,id',
+            'name' => ['required', 'string', Rule::unique('bed_types', 'name')->ignore($request->bed_type_id)],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->returnFail(1, $validator->errors()->all());
+        }
+        $bedTypeModel = BedType::find($request->bed_type_id);
+
+        $bedTypeModel->name = $request->name;
+        $bedTypeModel->save();
+
+        return $this->returnSuccess(201, 'Bed Type updated successfully');
+
+    }
+    public function toggleBedTypeStatus($request)
+    {
+        $rules = [
+            'bed_type_id' => 'required|integer|exists:bed_types,id',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->returnFail(1, $validator->errors()->all());
+        }
+        $bedTypeModel = BedType::find($request->bed_type_id);
+
+        $bedTypeModel->status = !$bedTypeModel->status;
+        $bedTypeModel->save();
+
+        return $this->returnSuccess(201, 'Bed Type status updated successfully');
+    }
+    public function deleteBedType($request)
+    {
+        $rules = [
+            'bed_type_id' => 'required|integer|exists:bed_types,id',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->returnFail(1, $validator->errors()->all());
+        }
+        $bedTypeModel = BedType::find($request->bed_type_id);
+
+        $bedTypeModel->is_delete = 1;
+        $bedTypeModel->save();
+
+        return $this->returnSuccess(201, 'Bed Type deleted successfully');
     }
 
 }
