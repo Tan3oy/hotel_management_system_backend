@@ -15,7 +15,7 @@ class RoomMetaService
     use CommonUtils;
 
     public function __construct(
-        
+
     ) {
     }
     public function createRoomType(Request $request)
@@ -33,6 +33,31 @@ class RoomMetaService
         $roomTypeModel->save();
         return $this->returnSuccess(201, 'New Room Type added successfully');
 
+    }
+    public function listRoomType(Request $request)
+    {
+        $roomTypeList = RoomType::select('id','name')->orderBy('id','desc')->get();
+
+        return $this->returnSuccess(201, $roomTypeList);
+    }
+    public function roomTypeDropdown(Request $request)
+    {
+        $roomTypeList = RoomType::select('id as value','name as label')->orderBy('name','asc')->get();
+
+        return $this->returnSuccess(201, $roomTypeList);
+    }
+    public function RoomTypeDetails(Request $request)
+    {
+        $rules = [
+            'room_type_id' => 'required|integer|exists:room_types,id',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->returnFail(1, $validator->errors()->all());
+        }
+        $roomTypeList = RoomType::select('id as value','name as label')->orderBy('name','asc')->get();
+
+        return $this->returnSuccess(201, $roomTypeList);
     }
     public function updateRoomType(Request $request)
     {

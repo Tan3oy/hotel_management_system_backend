@@ -18,6 +18,9 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::group(['prefix' => '/room-type'], function () {
             Route::post('/create', [MetaController::class, 'createRoomType']);
+            Route::post('list', [MetaController::class, 'createRoomType']);
+            Route::post('/dropdown', [MetaController::class, 'createRoomType']);
+            Route::post('/create', [MetaController::class, 'createRoomType']);
 
         });
         Route::group(['prefix' => '/bed-type'], function () {
