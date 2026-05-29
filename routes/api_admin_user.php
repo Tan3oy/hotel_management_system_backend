@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MetaController;
+use App\Http\Controllers\RoomMetaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +17,11 @@ Route::middleware('auth:api')->group(function () {
     Route::group(['middleware' => 'admin.user.super'], function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::group(['prefix' => '/room-type'], function () {
-            Route::post('/create', [MetaController::class,'createRoomType']);
+            Route::post('/create', [MetaController::class, 'createRoomType']);
+
+        });
+        Route::group(['prefix' => '/bed-type'], function () {
+            Route::post('/create', [RoomMetaController::class, 'createBedType']);
 
         });
     });

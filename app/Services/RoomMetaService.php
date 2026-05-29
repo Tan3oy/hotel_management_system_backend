@@ -6,20 +6,19 @@ use App\Helpers\CommonUtils;
 use App\Models\BedType;
 use App\Models\RoomType;
 use App\Repositories\Interfaces\RoomMetaInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class RoomMetaService
 {
     use CommonUtils;
-    protected $repoRoom;
 
     public function __construct(
-        RoomMetaInterface $repoRoom
+        
     ) {
-        $this->repoRoom = $repoRoom;
     }
-    public function createRoomType($request)
+    public function createRoomType(Request $request)
     {
         $rules = [
             'name' => 'required|string|unique:room_types,name',
@@ -35,7 +34,7 @@ class RoomMetaService
         return $this->returnSuccess(201, 'New Room Type added successfully');
 
     }
-    public function updateRoomType($request)
+    public function updateRoomType(Request $request)
     {
         $rules = [
             'room_type_id' => 'required|integer|exists:room_types,id',
@@ -53,7 +52,7 @@ class RoomMetaService
         return $this->returnSuccess(201, 'Room Type updated successfully');
 
     }
-    public function toggleRoomTypeStatus($request)
+    public function toggleRoomTypeStatus(Request $request)
     {
         $rules = [
             'room_type_id' => 'required|integer|exists:room_types,id',
@@ -69,7 +68,7 @@ class RoomMetaService
 
         return $this->returnSuccess(201, 'Room Type status updated successfully');
     }
-    public function deleteRoomType($request)
+    public function deleteRoomType(Request $request)
     {
         $rules = [
             'room_type_id' => 'required|integer|exists:room_types,id',
@@ -85,10 +84,10 @@ class RoomMetaService
 
         return $this->returnSuccess(201, 'Room Type deleted successfully');
     }
-    public function createBedType($request)
+    public function createBedType(Request $request)
     {
         $rules = [
-            'name' => 'required|string|unique:bed_types,name',
+            'name' => 'required|string|unique:room_bed_types_master,name',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -101,10 +100,10 @@ class RoomMetaService
         return $this->returnSuccess(201, 'New Bed Type added successfully');
 
     }
-    public function updateBedType($request)
+    public function updateBedType(Request $request)
     {
         $rules = [
-            'bed_type_id' => 'required|integer|exists:bed_types,id',
+            'bed_type_id' => 'required|integer|exists:room_bed_types_master,id',
             'name' => ['required', 'string', Rule::unique('bed_types', 'name')->ignore($request->bed_type_id)],
         ];
         $validator = Validator::make($request->all(), $rules);
@@ -119,10 +118,10 @@ class RoomMetaService
         return $this->returnSuccess(201, 'Bed Type updated successfully');
 
     }
-    public function toggleBedTypeStatus($request)
+    public function toggleBedTypeStatus(Request $request)
     {
         $rules = [
-            'bed_type_id' => 'required|integer|exists:bed_types,id',
+            'bed_type_id' => 'required|integer|exists:room_bed_types_master,id',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -135,10 +134,10 @@ class RoomMetaService
 
         return $this->returnSuccess(201, 'Bed Type status updated successfully');
     }
-    public function deleteBedType($request)
+    public function deleteBedType(Request $request)
     {
         $rules = [
-            'bed_type_id' => 'required|integer|exists:bed_types,id',
+            'bed_type_id' => 'required|integer|exists:room_bed_types_master,id',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
