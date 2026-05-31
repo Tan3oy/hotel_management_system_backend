@@ -21,7 +21,7 @@ class RoomMetaService
     public function createRoomType(Request $request)
     {
         $rules = [
-            'name' => 'required|string|unique:room_types,name',
+            'name' => 'required|string|unique:room_types_master,name',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -36,34 +36,34 @@ class RoomMetaService
     }
     public function listRoomType(Request $request)
     {
-        $roomTypeList = RoomType::select('id','name')->orderBy('id','desc')->get();
+        $roomTypeList = RoomType::select('id','name','status')->where('is_delete',0)->orderBy('id','desc')->get();
 
         return $this->returnSuccess(201, $roomTypeList);
     }
     public function roomTypeDropdown(Request $request)
     {
-        $roomTypeList = RoomType::select('id as value','name as label')->orderBy('name','asc')->get();
+        $roomTypeList = RoomType::select('name as label','id as value')->where('is_delete',0)->where('status',1)->orderBy('name','asc')->get();
 
         return $this->returnSuccess(201, $roomTypeList);
     }
     public function RoomTypeDetails(Request $request)
     {
         $rules = [
-            'room_type_id' => 'required|integer|exists:room_types,id',
+            'room_type_id' => 'required|integer|exists:room_types_master,id',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return $this->returnFail(1, $validator->errors()->all());
         }
-        $roomTypeList = RoomType::select('id as value','name as label')->orderBy('name','asc')->get();
+        $roomTypeItem = RoomType::select('id as value','name as label')->where('id',$request->room_type_id)->orderBy('name','asc')->get();
 
-        return $this->returnSuccess(201, $roomTypeList);
+        return $this->returnSuccess(201, $roomTypeItem);
     }
     public function updateRoomType(Request $request)
     {
         $rules = [
-            'room_type_id' => 'required|integer|exists:room_types,id',
-            'name' => ['required', 'string', Rule::unique('room_types', 'name')->ignore($request->room_type_id)],
+            'room_type_id' => 'required|integer|exists:room_types_master,id',
+            'name' => ['required', 'string', Rule::unique('room_types_master', 'name')->ignore($request->room_type_id)],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -80,7 +80,7 @@ class RoomMetaService
     public function toggleRoomTypeStatus(Request $request)
     {
         $rules = [
-            'room_type_id' => 'required|integer|exists:room_types,id',
+            'room_type_id' => 'required|integer|exists:room_types_master,id',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -96,7 +96,7 @@ class RoomMetaService
     public function deleteRoomType(Request $request)
     {
         $rules = [
-            'room_type_id' => 'required|integer|exists:room_types,id',
+            'room_type_id' => 'required|integer|exists:room_types_master,id',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -125,11 +125,36 @@ class RoomMetaService
         return $this->returnSuccess(201, 'New Bed Type added successfully');
 
     }
+    public function listBedType(Request $request)
+    {
+        $roomTypeList = BedType::select('id','name','status')->where('is_delete',0)->orderBy('id','desc')->get();
+
+        return $this->returnSuccess(201, $roomTypeList);
+    }
+    public function bedTypeDropdown(Request $request)
+    {
+        $roomTypeList = BedType::select('name as label','id as value')->where('is_delete',0)->where('status',1)->orderBy('name','asc')->get();
+
+        return $this->returnSuccess(201, $roomTypeList);
+    }
+    public function BedTypeDetails(Request $request)
+    {
+        $rules = [
+            'bed_type_id' => 'required|integer|exists:room_bed_types_master,id',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->returnFail(1, $validator->errors()->all());
+        }
+        $bedTypeItem = BedType::select('id','name')->where('id',$request->bed_type_id)->orderBy('id','desc')->get();
+
+        return $this->returnSuccess(201, $bedTypeItem);
+    }
     public function updateBedType(Request $request)
     {
         $rules = [
             'bed_type_id' => 'required|integer|exists:room_bed_types_master,id',
-            'name' => ['required', 'string', Rule::unique('bed_types', 'name')->ignore($request->bed_type_id)],
+            'name' => ['required', 'string', Rule::unique('room_bed_types_master', 'name')->ignore($request->bed_type_id)],
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {

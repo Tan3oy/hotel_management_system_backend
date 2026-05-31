@@ -17,6 +17,18 @@ class RoomMetaController extends Controller
         {
                 return $this->roomMetaService->createRoomType($request);
         }
+        public function viewRoomType(Request $request)
+        {
+                return $this->roomMetaService->RoomTypeDetails($request);
+        }
+        public function listRoomType(Request $request)
+        {
+                return $this->roomMetaService->listRoomType($request);
+        }
+        public function roomTypeDropdown(Request $request)
+        {
+                return $this->roomMetaService->roomTypeDropdown($request);
+        }
         public function updateRoomType(Request $request)
         {
                 return $this->roomMetaService->updateRoomType($request);
@@ -32,6 +44,31 @@ class RoomMetaController extends Controller
         public function createBedType(Request $request)
         {
                 return $this->roomMetaService->createBedType($request);
+        }
+         public function bedTypeDropdown(Request $request)
+        {
+                return $this->roomMetaService->bedTypeDropdown($request);
+        }
+
+        public function viewBedType(Request $request)
+        {
+                return $this->roomMetaService->BedTypeDetails($request);
+        }
+        public function listBedType(Request $request)
+        {
+                return $this->roomMetaService->listBedType($request);
+        }
+        public function updateBedType(Request $request)
+        {
+                return $this->roomMetaService->updateBedType($request);
+        }
+        public function toggleBedTypeStatus(Request $request)
+        {
+                return $this->roomMetaService->toggleBedTypeStatus($request);
+        }
+        public function deleteBedType(Request $request)
+        {
+                return $this->roomMetaService->deleteBedType($request);
         }
 
 }
