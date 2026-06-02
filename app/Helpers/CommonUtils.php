@@ -5,24 +5,24 @@ use Illuminate\Support\Facades\Log;
 
 trait CommonUtils
 {
-    public function returnSuccess($code,$data)
+    public function returnSuccess($code, $data)
     {
         $this->log($data);
         return response()->json([
-            'success' =>true,
+            'success' => true,
             'status_code' => $code,
             'message' => is_array($data) ? $data : [$data]
         ]);
     }
-    public function returnFail($code,$data)
+    public function returnFail($code, $data)
     {
         return response()->json([
-            'success' =>false,
+            'success' => false,
             'status_code' => $code,
             'message' => is_array($data) ? $data : [$data]
         ]);
     }
-        public function log($data, $label = 'DEBUG')
+    public function log($data, $label = 'DEBUG')
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
 

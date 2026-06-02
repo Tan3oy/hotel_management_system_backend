@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Helpers\CommonUtils;
 use App\Models\User;
 use App\Repositories\Interfaces\UserInterface;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserInterface
 {
+    use CommonUtils;
 
     public function createUser(Request $request)
     {
@@ -17,7 +19,9 @@ class UserRepository implements UserInterface
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role_id' => 1
         ]);
+        return $user;
     }
     public function getUserByEmail(Request $request)
     {
